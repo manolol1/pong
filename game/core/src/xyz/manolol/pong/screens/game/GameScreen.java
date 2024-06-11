@@ -19,9 +19,7 @@ public class GameScreen extends ScreenAdapter {
 
     private final ShapeRenderer shapeRenderer;
 
-    Array<Player> players = new Array<>();
-
-
+    private final PlayerManager playerManager;
 
     public GameScreen(int playerCount) {
         // set up cameras and viewports
@@ -30,22 +28,9 @@ public class GameScreen extends ScreenAdapter {
         gameViewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, gameCamera);
         uiViewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, uiCamera);
 
-
         shapeRenderer = new ShapeRenderer();
 
-        // set up players
-        if (playerCount >= 1) {
-            players.add(new Player((Constants.WORLD_WIDTH / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.PLAYER_LENGTH, Constants.PLAYER_WIDTH));
-        }
-        if (playerCount >= 2) {
-            players.add(new Player((Constants.WORLD_WIDTH / 2) - (Constants.PLAYER_LENGTH / 2), Constants.WORLD_HEIGHT - Constants.PLAYER_WIDTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.PLAYER_LENGTH, Constants.PLAYER_WIDTH));
-        }
-        if (playerCount >= 3) {
-            players.add(new Player(Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, (Constants.WORLD_HEIGHT / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_WIDTH, Constants.PLAYER_LENGTH));
-        }
-        if (playerCount >= 4) {
-            players.add(new Player(Constants.WORLD_WIDTH - Constants.PLAYER_WIDTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, (Constants.WORLD_HEIGHT / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_WIDTH, Constants.PLAYER_LENGTH));
-        }
+        playerManager = new PlayerManager(playerCount);
     }
 
     @Override
@@ -56,9 +41,7 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        for (Player player : players) {
-            player.draw(shapeRenderer);
-        }
+        playerManager.draw(shapeRenderer);
 
         shapeRenderer.end();
     }
