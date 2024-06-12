@@ -35,9 +35,13 @@ public class PlayerManager {
         }
     }
 
-    public void update(float delta, FitViewport viewport) {
+    public void update(float delta) {
         for (Player player : players) {
-            player.update(delta, viewport);
+            player.update(delta);
         }
+    }
+
+    public Array<Player> getPlayers() {
+        return players;
     }
 }

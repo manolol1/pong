@@ -4,7 +4,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import xyz.manolol.pong.Constants;
@@ -20,6 +19,8 @@ public class GameScreen extends ScreenAdapter {
     private final ShapeRenderer shapeRenderer;
 
     private final PlayerManager playerManager;
+    private final Ball ball;
+    private final BallCollisionController ballCollisionController;
 
     public GameScreen(int playerCount) {
         // set up cameras and viewports
@@ -31,6 +32,8 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer = new ShapeRenderer();
 
         playerManager = new PlayerManager(playerCount);
+        ball = new Ball();
+        ballCollisionController = new BallCollisionController(playerManager, ball);
     }
 
     @Override
@@ -41,7 +44,13 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        playerManager.update(delta, gameViewport);
+        // update game logic
+        ball.update(delta);
+        playerManager.update(delta);
+        ballCollisionController.update();
+
+        // draw everything
+        ball.draw(shapeRenderer);
         playerManager.draw(shapeRenderer);
 
         shapeRenderer.end();

@@ -6,16 +6,20 @@ import xyz.manolol.pong.utils.ControlScheme;
 public class Constants
 {
     /* Viewports */
-    public static final float WORLD_WIDTH = 128;
-    public static final float WORLD_HEIGHT = 128;
-    public static final float UI_WIDTH = 1920;
-    public static final float UI_HEIGHT = 1080;
+    public static final float WORLD_WIDTH = 128f;
+    public static final float WORLD_HEIGHT = 128f;
+    public static final float UI_WIDTH = 1920f;
+    public static final float UI_HEIGHT = 1080f;
 
     /* Player */
     public static final float PLAYER_WIDTH = 4f;
     public static final float PLAYER_LENGTH= 20f;
     public static final float PLAYER_DISTANCE_TO_SCREEN_BORDER = 1.2f;
     public static final float PLAYER_MOVEMENT_SPEED = 60f;
+
+    /* Ball */
+    public static final float BALL_SIZE = 3f;
+    public static final float BALL_DEFAULT_SPEED = 20f;
 
     /* Input Modes */
     public static ControlScheme[][] CONTROL_SCHEMES = new ControlScheme[4][4];

@@ -27,7 +27,8 @@ public class Player {
         shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
-    public void update(float delta, FitViewport viewport) {
+    public void update(float delta) {
+        // movement (controls)
         if (Gdx.input.isKeyPressed(controls.leftKey)) {
             if (movementType == movementType.UP_DOWN) {
                 bounds.y -= Constants.PLAYER_MOVEMENT_SPEED * delta;
@@ -44,16 +45,24 @@ public class Player {
             }
         }
 
-        ensureBounds(viewport);
+        ensureBounds();
 
     }
 
-    private void ensureBounds(FitViewport viewport) {
+    private void ensureBounds() {
         if (movementType == MovementType.LEFT_RIGHT) {
-            bounds.x = MathUtils.clamp(bounds.x,Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, viewport.getWorldWidth() - Constants.PLAYER_LENGTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER);
+            bounds.x = MathUtils.clamp(bounds.x,Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.WORLD_WIDTH - Constants.PLAYER_LENGTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER);
         }
         else if (movementType == MovementType.UP_DOWN) {
-            bounds.y = MathUtils.clamp(bounds.y, Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, viewport.getWorldWidth() - Constants.PLAYER_LENGTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER);
+            bounds.y = MathUtils.clamp(bounds.y, Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.WORLD_WIDTH - Constants.PLAYER_LENGTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER);
         }
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public MovementType getMovementType() {
+        return movementType;
     }
 }
