@@ -41,6 +41,7 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
+        playerManager.update(delta, gameViewport);
         playerManager.draw(shapeRenderer);
 
         shapeRenderer.end();

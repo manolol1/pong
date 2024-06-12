@@ -1,2 +1,6 @@
-package xyz.manolol.pong.screens.game;public enum MovementType {
+package xyz.manolol.pong.screens.game;
+
+public enum MovementType {
+    UP_DOWN,
+    LEFT_RIGHT
 }

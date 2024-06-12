@@ -2,6 +2,7 @@ package xyz.manolol.pong.screens.game;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import xyz.manolol.pong.Constants;
 
 public class PlayerManager {
@@ -10,16 +11,16 @@ public class PlayerManager {
     public PlayerManager(int playerCount) {
         // set up players
         if (playerCount >= 1) {
-            players.add(new Player((Constants.WORLD_WIDTH / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.PLAYER_LENGTH, Constants.PLAYER_WIDTH));
+            players.add(new Player((Constants.WORLD_WIDTH / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.PLAYER_LENGTH, Constants.PLAYER_WIDTH, MovementType.LEFT_RIGHT));
         }
         if (playerCount >= 2) {
-            players.add(new Player((Constants.WORLD_WIDTH / 2) - (Constants.PLAYER_LENGTH / 2), Constants.WORLD_HEIGHT - Constants.PLAYER_WIDTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.PLAYER_LENGTH, Constants.PLAYER_WIDTH));
+            players.add(new Player((Constants.WORLD_WIDTH / 2) - (Constants.PLAYER_LENGTH / 2), Constants.WORLD_HEIGHT - Constants.PLAYER_WIDTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, Constants.PLAYER_LENGTH, Constants.PLAYER_WIDTH, MovementType.LEFT_RIGHT));
         }
         if (playerCount >= 3) {
-            players.add(new Player(Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, (Constants.WORLD_HEIGHT / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_WIDTH, Constants.PLAYER_LENGTH));
+            players.add(new Player(Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, (Constants.WORLD_HEIGHT / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_WIDTH, Constants.PLAYER_LENGTH, MovementType.UP_DOWN));
         }
         if (playerCount >= 4) {
-            players.add(new Player(Constants.WORLD_WIDTH - Constants.PLAYER_WIDTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, (Constants.WORLD_HEIGHT / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_WIDTH, Constants.PLAYER_LENGTH));
+            players.add(new Player(Constants.WORLD_WIDTH - Constants.PLAYER_WIDTH - Constants.PLAYER_DISTANCE_TO_SCREEN_BORDER, (Constants.WORLD_HEIGHT / 2) - (Constants.PLAYER_LENGTH / 2), Constants.PLAYER_WIDTH, Constants.PLAYER_LENGTH, MovementType.UP_DOWN));
         }
 
         // set control schemes
@@ -31,6 +32,12 @@ public class PlayerManager {
     public void draw(ShapeRenderer shapeRenderer) {
         for (Player player : players) {
             player.draw(shapeRenderer);
+        }
+    }
+
+    public void update(float delta, FitViewport viewport) {
+        for (Player player : players) {
+            player.update(delta, viewport);
         }
     }
 }

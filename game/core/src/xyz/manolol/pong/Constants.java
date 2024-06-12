@@ -7,14 +7,15 @@ public class Constants
 {
     /* Viewports */
     public static final float WORLD_WIDTH = 128;
-    public static final float WORLD_HEIGHT = 72;
+    public static final float WORLD_HEIGHT = 128;
     public static final float UI_WIDTH = 1920;
     public static final float UI_HEIGHT = 1080;
 
     /* Player */
     public static final float PLAYER_WIDTH = 4f;
-    public static final float PLAYER_LENGTH= 16f;
+    public static final float PLAYER_LENGTH= 20f;
     public static final float PLAYER_DISTANCE_TO_SCREEN_BORDER = 1.2f;
+    public static final float PLAYER_MOVEMENT_SPEED = 60f;
 
     /* Input Modes */
     public static ControlScheme[][] CONTROL_SCHEMES = new ControlScheme[4][4];
