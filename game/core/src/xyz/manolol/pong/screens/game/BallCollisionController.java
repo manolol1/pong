@@ -17,11 +17,11 @@ public class BallCollisionController {
             if (player.getBounds().overlaps(ball.getBounds())) {
                 if (player.getMovementType() == MovementType.LEFT_RIGHT) {
                     ball.swapVelocityY();
-                    ball.setVelocityX(MathUtils.random(-20, 20));
+                    ball.setVelocityX(MathUtils.random(-2, 2));
                 }
                 else if (player.getMovementType() == MovementType.UP_DOWN) {
                     ball.swapVelocityX();
-                    ball.setVelocityY(MathUtils.random(-20, 20));
+                    ball.setVelocityY(MathUtils.random(-10, 2));
                 }
             }
         }

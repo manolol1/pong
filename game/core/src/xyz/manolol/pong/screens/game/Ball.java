@@ -40,6 +40,6 @@ public class Ball {
     }
 
     public void setVelocityY(float velocityY) {
-        velocity.x = velocityY;
+        velocity.y = velocityY;
     }
 }
