@@ -20,6 +20,7 @@ public class Constants
     /* Ball */
     public static final float BALL_SIZE = 3f;
     public static final float BALL_DEFAULT_SPEED = 20f;
+    public static final float BALL_BOUNCE_RANGE = 30f;
 
     /* Input Modes */
     public static ControlScheme[][] CONTROL_SCHEMES = new ControlScheme[4][4];

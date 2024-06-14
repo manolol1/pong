@@ -33,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
 
         playerManager = new PlayerManager(playerCount);
         ball = new Ball();
-        ballCollisionController = new BallCollisionController(playerManager, ball);
+        ballCollisionController = new BallCollisionController(playerManager, ball, playerCount);
     }
 
     @Override
