@@ -9,6 +9,6 @@ public class Pong extends Game {
 	public void create() {
 		GAME = this;
 
-		GAME.setScreen(new GameScreen(1));
+		GAME.setScreen(new GameScreen(3));
 	}
 }

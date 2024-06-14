@@ -18,10 +18,6 @@ public class GameScreen extends ScreenAdapter {
 
     private final ShapeRenderer shapeRenderer;
 
-    private final PlayerManager playerManager;
-    private final Ball ball;
-    private final BallCollisionController ballCollisionController;
-
     public GameScreen(int playerCount) {
         // set up cameras and viewports
         gameCamera = new OrthographicCamera();
@@ -30,10 +26,6 @@ public class GameScreen extends ScreenAdapter {
         uiViewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, uiCamera);
 
         shapeRenderer = new ShapeRenderer();
-
-        playerManager = new PlayerManager(playerCount);
-        ball = new Ball();
-        ballCollisionController = new BallCollisionController(playerManager, ball, playerCount);
     }
 
     @Override
@@ -45,13 +37,10 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         // update game logic
-        ball.update(delta);
-        playerManager.update(delta);
-        ballCollisionController.update();
+
 
         // draw everything
-        ball.draw(shapeRenderer);
-        playerManager.draw(shapeRenderer);
+
 
         shapeRenderer.end();
     }
