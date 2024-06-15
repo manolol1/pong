@@ -33,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
 
         playerManager = new PlayerManager(playerCount);
         ball = new Ball();
-        ballCollisionController = new BallCollisionController(playerManager, ball, playerCount);
+        ballCollisionController = new BallCollisionController(playerManager, ball, this, playerCount);
     }
 
     @Override
@@ -47,13 +47,17 @@ public class GameScreen extends ScreenAdapter {
         // update game logic
         ball.update(delta);
         playerManager.update(delta);
-        ballCollisionController.update();
+        ballCollisionController.update(delta);
 
         // draw everything
         ball.draw(shapeRenderer);
         playerManager.draw(shapeRenderer);
 
         shapeRenderer.end();
+    }
+
+    public void gameOver(int player) {
+        System.out.println("Player " + player + " lost!");
     }
 
     @Override

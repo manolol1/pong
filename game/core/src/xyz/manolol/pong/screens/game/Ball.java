@@ -2,16 +2,19 @@ package xyz.manolol.pong.screens.game;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import xyz.manolol.pong.Constants;
 
 public class Ball {
     private final Rectangle bounds;
-    private Vector2 velocity = new Vector2(Constants.BALL_DEFAULT_SPEED, 0f);
+    private final Vector2 velocity;
 
     public Ball() {
         bounds = new Rectangle(Constants.WORLD_WIDTH / 2, Constants.WORLD_HEIGHT / 2, Constants.BALL_SIZE, Constants.BALL_SIZE);
+        velocity = new Vector2();
+        setRandomVelocity();
     }
 
     public void draw(ShapeRenderer shapeRenderer) {
@@ -41,5 +44,23 @@ public class Ball {
 
     public void setVelocityY(float velocityY) {
         velocity.y = velocityY;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
+    public void setPositionX(float x) {
+        bounds.x = x;
+    }
+
+    public void setPositionY(float y) {
+        bounds.y = y;
+    }
+
+    // math formula from github copilot
+    public void setRandomVelocity() {
+        float angle = MathUtils.random(MathUtils.PI2);
+        velocity.set(MathUtils.cos(angle) * Constants.BALL_DEFAULT_SPEED, MathUtils.sin(angle) * Constants.BALL_DEFAULT_SPEED);
     }
 }

@@ -44,4 +44,8 @@ public class PlayerManager {
     public Array<Player> getPlayers() {
         return players;
     }
+
+    public Player getPlayer(int i) {
+        return players.get(i);
+    }
 }

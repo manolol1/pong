@@ -8,37 +8,69 @@ import xyz.manolol.pong.Constants;
 public class BallCollisionController {
     private final PlayerManager playerManager;
     private final Ball ball;
+    private final GameScreen gameScreen;
     private final int playerCount;
-    Array<Wall> walls;
 
-    public BallCollisionController(PlayerManager playerManager, Ball ball, int playerCount) {
+    public BallCollisionController(PlayerManager playerManager, Ball ball, GameScreen gameScreen, int playerCount) {
         this.playerManager = playerManager;
         this.ball = ball;
+        this.gameScreen = gameScreen;
         this.playerCount = playerCount;
-
-        // TODO: Add walls
-        walls.add(new Wall(1, new Rectangle(Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, 20, 20)));
     }
 
-    public void update() {
-        // bounce off of players
-        for (Player player : playerManager.getPlayers()) {
-            if (player.getBounds().overlaps(ball.getBounds())) {
-                if (player.getMovementType() == MovementType.LEFT_RIGHT) {
-                    ball.swapVelocityY();
-                    ball.setVelocityX(MathUtils.random(-Constants.BALL_BOUNCE_RANGE, Constants.BALL_BOUNCE_RANGE));
-                }
-                else if (player.getMovementType() == MovementType.UP_DOWN) {
-                    ball.swapVelocityX();
-                    ball.setVelocityY(MathUtils.random(-Constants.BALL_BOUNCE_RANGE, Constants.BALL_BOUNCE_RANGE));
-                }
+    public void update(float delta) {
+        // Check for collision with the walls
+        if (ball.getBounds().x <= 0) { // left wall
+            if (playerCount >= 3) {
+                gameScreen.gameOver(3);
+            } else {
+                ball.swapVelocityX();
+                ball.setRandomVelocity();
+                ball.setPositionX(0); // Adjust position
+            }
+        } else if (ball.getBounds().x + ball.getBounds().width >= Constants.WORLD_WIDTH) { // right wall
+            if (playerCount >= 4) {
+                gameScreen.gameOver(4);
+            } else {
+                ball.swapVelocityX();
+                ball.setRandomVelocity();
+                ball.setPositionX(Constants.WORLD_WIDTH - ball.getBounds().width); // Adjust position
             }
         }
 
-        // bounce off walls or make player loose
-        if (ball.getBounds().x < 0 || ball.getBounds().x > Constants.WORLD_WIDTH || ball.getBounds().y < 0 || ball.getBounds().y > Constants.WORLD_HEIGHT) {
-            // check if player has lost
+        if (ball.getBounds().y <= 0) { // bottom wall
+            if (playerCount >= 2) {
+                gameScreen.gameOver(2);
+            } else {
+                ball.swapVelocityY();
+                ball.setRandomVelocity();
+                ball.setPositionY(0); // Adjust position
+            }
+        } else if (ball.getBounds().y + ball.getBounds().height >= Constants.WORLD_HEIGHT) { // top wall
+            if (playerCount >= 1) {
+                gameScreen.gameOver(1);
+            } else {
+                ball.swapVelocityY();
+                ball.setRandomVelocity();
+                ball.setPositionY(Constants.WORLD_HEIGHT - ball.getBounds().height); // Adjust position
+            }
+        }
 
+        // Check for collision with the players
+        for (int i = 0; i < playerCount; i++) {
+            Player player = playerManager.getPlayer(i);
+            if (player.getBounds().overlaps(ball.getBounds())) {
+                ball.swapVelocityX();
+                ball.swapVelocityY();
+                ball.setRandomVelocity();
+
+                // Move the ball out of the player
+                if (ball.getBounds().x < player.getBounds().x) {
+                    ball.setPositionX(player.getBounds().x - ball.getBounds().width);
+                } else if (ball.getBounds().x + ball.getBounds().width > player.getBounds().x + player.getBounds().width) {
+                    ball.setPositionX(player.getBounds().x + player.getBounds().width);
+                }
+            }
         }
     }
 }
