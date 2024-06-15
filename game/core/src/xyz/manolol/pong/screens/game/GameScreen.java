@@ -57,6 +57,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void gameOver(int player) {
+        // TODO: Replace with game over screen
         System.out.println("Player " + player + " lost!");
     }
 
