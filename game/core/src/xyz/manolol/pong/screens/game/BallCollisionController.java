@@ -1,8 +1,5 @@
 package xyz.manolol.pong.screens.game;
 
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 import xyz.manolol.pong.Constants;
 
 public class BallCollisionController {
@@ -60,15 +57,28 @@ public class BallCollisionController {
         for (int i = 0; i < playerCount; i++) {
             Player player = playerManager.getPlayer(i);
             if (player.getBounds().overlaps(ball.getBounds())) {
-                ball.swapVelocityX();
-                ball.swapVelocityY();
+
+                if (player.getMovementType() == MovementType.LEFT_RIGHT) {
+                    ball.swapVelocityX();
+                } else {
+                    ball.swapVelocityY();
+                }
+
                 ball.setRandomVelocity();
 
                 // Move the ball out of the player
-                if (ball.getBounds().x < player.getBounds().x) {
-                    ball.setPositionX(player.getBounds().x - ball.getBounds().width);
-                } else if (ball.getBounds().x + ball.getBounds().width > player.getBounds().x + player.getBounds().width) {
-                    ball.setPositionX(player.getBounds().x + player.getBounds().width);
+                if (player.getMovementType() == MovementType.UP_DOWN) {
+                    if (ball.getBounds().x < Constants.WORLD_WIDTH / 2) {
+                        ball.setPositionX(player.getBounds().x + Constants.BALL_SIZE + 2);
+                    } else {
+                        ball.setPositionX(player.getBounds().x - Constants.BALL_SIZE - 2);
+                    }
+                } else {
+                    if (ball.getBounds().y < Constants.WORLD_HEIGHT / 2) {
+                        ball.setPositionY(player.getBounds().y + Constants.BALL_SIZE + 2);
+                    } else {
+                        ball.setPositionY(player.getBounds().y - Constants.BALL_SIZE - 2);
+                    }
                 }
             }
         }
