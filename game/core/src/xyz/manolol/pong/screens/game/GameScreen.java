@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import xyz.manolol.pong.Constants;
+import xyz.manolol.pong.Pong;
+import xyz.manolol.pong.screens.gameover.GameOverScreen;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -22,7 +24,12 @@ public class GameScreen extends ScreenAdapter {
     private final Ball ball;
     private final BallCollisionController ballCollisionController;
 
+    private final int playerCount;
+    private int gameOverState = -1;
+
     public GameScreen(int playerCount) {
+        this.playerCount = playerCount;
+
         // set up cameras and viewports
         gameCamera = new OrthographicCamera();
         uiCamera = new OrthographicCamera();
@@ -54,11 +61,16 @@ public class GameScreen extends ScreenAdapter {
         playerManager.draw(shapeRenderer);
 
         shapeRenderer.end();
+
+        // workaround to avoid crash
+        if (gameOverState != -1) {
+            Pong.GAME.setScreen(new GameOverScreen(gameOverState, playerCount));
+            return;
+        }
     }
 
     public void gameOver(int player) {
-        // TODO: Replace with game over screen
-        System.out.println("Player " + player + " lost!");
+        gameOverState = player;
     }
 
     @Override

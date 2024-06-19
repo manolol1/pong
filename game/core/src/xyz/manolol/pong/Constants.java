@@ -15,11 +15,11 @@ public class Constants
     public static final float PLAYER_WIDTH = 5f;
     public static final float PLAYER_LENGTH= 22f;
     public static final float PLAYER_DISTANCE_TO_SCREEN_BORDER = 1.2f;
-    public static final float PLAYER_MOVEMENT_SPEED = 60f;
+    public static final float PLAYER_MOVEMENT_SPEED = 70f;
 
     /* Ball */
     public static final float BALL_SIZE = 4f;
-    public static final float BALL_DEFAULT_SPEED = 30f;
+    public static final float BALL_DEFAULT_SPEED = 40f;
 
     /* Input Modes */
     public static ControlScheme[][] CONTROL_SCHEMES = new ControlScheme[4][4];
