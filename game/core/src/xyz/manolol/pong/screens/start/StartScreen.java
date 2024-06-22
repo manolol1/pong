@@ -1,4 +1,4 @@
-package xyz.manolol.pong.screens.mainmenu;
+package xyz.manolol.pong.screens.start;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -16,21 +16,25 @@ import com.kotcrab.vis.ui.VisUI;
 import xyz.manolol.pong.Constants;
 import xyz.manolol.pong.Pong;
 import xyz.manolol.pong.screens.game.GameScreen;
-import xyz.manolol.pong.screens.start.StartScreen;
+import xyz.manolol.pong.screens.mainmenu.MainMenuScreen;
+import xyz.manolol.pong.utils.ControlScheme;
 import xyz.manolol.pong.utils.FontManager;
 
-public class MainMenuScreen extends ScreenAdapter {
+public class StartScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final FitViewport viewport;
     private final Stage stage;
     private final Skin skin;
     private final FontManager fontManager;
     private final Table root;
-    private final Table playerSelectionTable;
+    private final Table controlSchemeTable;
+    private final Table buttonTable;
     private Label label;
     private TextButton textButton;
 
-    public MainMenuScreen() {
+    public StartScreen(int playerCount) {
+        Gdx.app.log("StartScreen", "loaded with playerCount: " + playerCount);
+
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, camera);
         stage = new Stage(viewport);
@@ -42,71 +46,55 @@ public class MainMenuScreen extends ScreenAdapter {
         root.setFillParent(true);
         stage.addActor(root);
 
-        playerSelectionTable = new Table();
-
-        skin.get(Label.LabelStyle.class).font = fontManager.getFont(130);
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(100);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
-        label = new Label("[FOREST]PONG", skin);
+        label = new Label("[FOREST]Controls", skin);
         root.add(label).padBottom(40).row();
 
-        // Player Selection Buttons //
+        // set up controlSchemeTable
+        controlSchemeTable = new Table();
+        ControlScheme[][] cs = Constants.CONTROL_SCHEMES;
+        String left, right;
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        for (int i = 1; i <= playerCount; i++) {
+            left = cs[playerCount - 1][i - 1].leftText;
+            right = cs[playerCount - 1][i - 1].rightText;
+
+            label = new Label(String.format("Player %d: %s and %s", i, left, right), skin);
+            controlSchemeTable.add(label).padRight(80).padBottom(40);
+
+            if (i == 2) controlSchemeTable.row();
+        }
+
+        root.add(controlSchemeTable).padBottom(40).row();
+
+        // set up buttonTable
+        buttonTable = new Table();
+
         skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
-        textButton = new TextButton("1 Player", skin);
+        textButton = new TextButton("Back", skin);
         textButton.pad(15);
         textButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Pong.GAME.setScreen(new StartScreen(1));
+                Pong.GAME.setScreen(new MainMenuScreen());
             }
         });
-        playerSelectionTable.add(textButton).padBottom(50).width(400).padRight(50);
+        buttonTable.add(textButton).padBottom(50).width(400).padRight(50);
 
         skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
-        textButton = new TextButton("2 Players", skin);
+        textButton = new TextButton("Start", skin);
         textButton.pad(15);
         textButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Pong.GAME.setScreen(new StartScreen(2));
+                Pong.GAME.setScreen(new GameScreen(playerCount));
             }
         });
-        playerSelectionTable.add(textButton).padBottom(50).width(400).row();
+        buttonTable.add(textButton).padBottom(50).width(400).padRight(50);
 
-        skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
-        textButton = new TextButton("3 Players", skin);
-        textButton.pad(15);
-        textButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Pong.GAME.setScreen(new StartScreen(3));
-            }
-        });
-        playerSelectionTable.add(textButton).padBottom(50).width(400).padRight(50);
-
-        skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
-        textButton = new TextButton("4 Players", skin);
-        textButton.pad(15);
-        textButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Pong.GAME.setScreen(new StartScreen(4));
-            }
-        });
-        playerSelectionTable.add(textButton).padBottom(50).width(400).row();
-
-        root.add(playerSelectionTable).padBottom(40).row();
-
-        skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
-        textButton = new TextButton("Exit", skin);
-        textButton.pad(15);
-        textButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
-            }
-        });
-        root.add(textButton).padBottom(50).width(400).padRight(50);
-
+        root.add(buttonTable).padBottom(40).row();
     }
 
     @Override
