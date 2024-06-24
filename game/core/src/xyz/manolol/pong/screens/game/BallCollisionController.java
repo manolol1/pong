@@ -60,6 +60,8 @@ public class BallCollisionController {
             Player player = playerManager.getPlayer(i);
             if (player.getBounds().overlaps(ball.getBounds())) {
 
+                gameScreen.score();
+
                 if (player.getMovementType() == MovementType.LEFT_RIGHT) {
                     ball.swapVelocityY();
                 } else {

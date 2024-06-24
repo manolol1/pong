@@ -19,6 +19,8 @@ import xyz.manolol.pong.screens.game.GameScreen;
 import xyz.manolol.pong.screens.mainmenu.MainMenuScreen;
 import xyz.manolol.pong.utils.ControlScheme;
 import xyz.manolol.pong.utils.FontManager;
+import xyz.manolol.pong.utils.HighscoreManager;
+import xyz.manolol.pong.utils.PrefsManager;
 
 public class StartScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
@@ -32,6 +34,8 @@ public class StartScreen extends ScreenAdapter {
     private Label label;
     private TextButton textButton;
 
+    private final HighscoreManager highscoreManager;
+
     public StartScreen(int playerCount) {
         Gdx.app.log("StartScreen", "loaded with playerCount: " + playerCount);
 
@@ -41,6 +45,7 @@ public class StartScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         skin = VisUI.getSkin();
         fontManager = new FontManager("fonts/Roboto-Regular.ttf");
+        highscoreManager = new HighscoreManager();
 
         root = new Table();
         root.setFillParent(true);
@@ -68,6 +73,21 @@ public class StartScreen extends ScreenAdapter {
         }
 
         root.add(controlSchemeTable).padBottom(40).row();
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(100);
+        skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        label = new Label("[FOREST]Highscores", skin);
+        root.add(label).padBottom(40).row();
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        label = new Label("Local: " + highscoreManager.getLocalHighscore(playerCount), skin);
+        root.add(label).padBottom(20).row();
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        label = new Label("Online: " , skin);
+        root.add(label).padBottom(40).row();
 
         // set up buttonTable
         buttonTable = new Table();

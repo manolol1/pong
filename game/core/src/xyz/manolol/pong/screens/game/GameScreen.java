@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import xyz.manolol.pong.Constants;
 import xyz.manolol.pong.Pong;
 import xyz.manolol.pong.screens.gameover.GameOverScreen;
+import xyz.manolol.pong.utils.HighscoreManager;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -26,6 +27,9 @@ public class GameScreen extends ScreenAdapter {
 
     private final int playerCount;
     private int gameOverState = -1;
+    private final HighscoreManager highscoreManager;
+
+    private int score = 0;
 
     public GameScreen(int playerCount) {
         this.playerCount = playerCount;
@@ -41,6 +45,8 @@ public class GameScreen extends ScreenAdapter {
         playerManager = new PlayerManager(playerCount);
         ball = new Ball();
         ballCollisionController = new BallCollisionController(playerManager, ball, this, playerCount);
+
+        highscoreManager = new HighscoreManager();
     }
 
     @Override
@@ -70,7 +76,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void gameOver(int player) {
+        highscoreManager.setHighscore(playerCount, score);
         gameOverState = player;
+    }
+
+    public void score() {
+        score++;
     }
 
     @Override
