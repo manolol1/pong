@@ -87,7 +87,7 @@ public class StartScreen extends ScreenAdapter {
         skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
         label = new Label("Online: " , skin);
-        root.add(label).padBottom(40).row();
+        root.add(label).padBottom(60).row();
 
         // set up buttonTable
         buttonTable = new Table();

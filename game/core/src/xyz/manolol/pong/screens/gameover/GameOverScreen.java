@@ -18,6 +18,7 @@ import xyz.manolol.pong.Pong;
 import xyz.manolol.pong.screens.game.GameScreen;
 import xyz.manolol.pong.screens.mainmenu.MainMenuScreen;
 import xyz.manolol.pong.utils.FontManager;
+import xyz.manolol.pong.utils.HighscoreManager;
 
 public class GameOverScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
@@ -27,14 +28,16 @@ public class GameOverScreen extends ScreenAdapter {
     private Label label;
     private TextButton textButton;
 
+    private final HighscoreManager highscoreManager;
 
-    public GameOverScreen(int playerLost, int playerCount) {
+    public GameOverScreen(int playerLost, int playerCount, int score) {
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, camera);
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
         skin = VisUI.getSkin();
         FontManager fontManager = new FontManager("fonts/Roboto-Regular.ttf");
+        highscoreManager = new HighscoreManager();
 
         Table root = new Table();
         root.setFillParent(true);
@@ -48,6 +51,21 @@ public class GameOverScreen extends ScreenAdapter {
         skin.get(Label.LabelStyle.class).font = fontManager.getFont(100);
         label = new Label("Player " + playerLost + " lost!", skin);
         root.add(label).padBottom(50).row();
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        label = new Label("Score: " + score, skin);
+        root.add(label).padBottom(25).row();
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        label = new Label("Local Highscore: " + highscoreManager.getLocalHighscore(playerCount), skin);
+        root.add(label).padBottom(20).row();
+
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        label = new Label("Online Highscore: " , skin);
+        root.add(label).padBottom(40).row();
 
         skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
         textButton = new TextButton("Main Menu", skin);

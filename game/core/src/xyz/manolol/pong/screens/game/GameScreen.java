@@ -70,7 +70,7 @@ public class GameScreen extends ScreenAdapter {
 
         // workaround to avoid crash
         if (gameOverState != -1) {
-            Pong.GAME.setScreen(new GameOverScreen(gameOverState, playerCount));
+            Pong.GAME.setScreen(new GameOverScreen(gameOverState, playerCount, score));
             return;
         }
     }
