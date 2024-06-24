@@ -1,5 +1,6 @@
 package xyz.manolol.pong.screens.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,6 +11,11 @@ import xyz.manolol.pong.Constants;
 import xyz.manolol.pong.Pong;
 import xyz.manolol.pong.screens.gameover.GameOverScreen;
 import xyz.manolol.pong.utils.HighscoreManager;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -76,7 +82,14 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void gameOver(int player) {
-        highscoreManager.setHighscore(playerCount, score);
+        try {
+            highscoreManager.setHighscore(playerCount, score).get(5, TimeUnit.SECONDS); // wait up to 5 seconds for the request to complete
+        } catch (InterruptedException | ExecutionException e) {
+            Gdx.app.error("GameScreen", "Failed to set highscore: " + e.getMessage());
+        } catch (TimeoutException e) {
+            Gdx.app.error("GameScreen", "Highscore set request timed out");
+        }
+
         gameOverState = player;
     }
 
@@ -87,7 +100,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         gameViewport.update(width, height, true);
-        uiViewport.update(width,height, true);
+        uiViewport.update(width, height, true);
     }
 
     @Override

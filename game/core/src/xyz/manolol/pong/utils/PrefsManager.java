@@ -18,4 +18,12 @@ public class PrefsManager {
     public int getHighscore(int playerCount) {
         return prefs.getInteger(String.valueOf(playerCount), 0);
     }
+
+    public void setHighscoreServer(String address) {
+        prefs.putString("highscore_server", address);
+    }
+
+    public String getHighscoreServer() {
+        return prefs.getString("highscore_server", "http://azure.manolol.xyz:8080");
+    }
 }

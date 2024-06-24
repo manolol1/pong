@@ -20,6 +20,9 @@ import xyz.manolol.pong.screens.mainmenu.MainMenuScreen;
 import xyz.manolol.pong.utils.FontManager;
 import xyz.manolol.pong.utils.HighscoreManager;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 public class GameOverScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final FitViewport viewport;
@@ -27,17 +30,21 @@ public class GameOverScreen extends ScreenAdapter {
     private final Skin skin;
     private Label label;
     private TextButton textButton;
+    private Label onlineHighscoreLabel;
 
     private final HighscoreManager highscoreManager;
+    CompletableFuture<Integer> highscoreFuture;
 
     public GameOverScreen(int playerLost, int playerCount, int score) {
+        highscoreManager = new HighscoreManager();
+        highscoreFuture = highscoreManager.getOnlineHighscore(playerCount);
+
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, camera);
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
         skin = VisUI.getSkin();
         FontManager fontManager = new FontManager("fonts/Roboto-Regular.ttf");
-        highscoreManager = new HighscoreManager();
 
         Table root = new Table();
         root.setFillParent(true);
@@ -64,8 +71,8 @@ public class GameOverScreen extends ScreenAdapter {
 
         skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
-        label = new Label("Online Highscore: " , skin);
-        root.add(label).padBottom(40).row();
+        onlineHighscoreLabel = new Label("Online: loading...", skin);
+        root.add(onlineHighscoreLabel).padBottom(40).row();
 
         skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);
         textButton = new TextButton("Main Menu", skin);
@@ -95,6 +102,16 @@ public class GameOverScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+
+        if (highscoreFuture.isDone()) {
+            try {
+                onlineHighscoreLabel.setText("Online Highscore: " + highscoreFuture.get());
+            } catch (InterruptedException | ExecutionException e) {
+                onlineHighscoreLabel.setText("Failed to load highscore");
+            }
+        } else {
+            onlineHighscoreLabel.setText("Loading highscore...");
+        }
 
         stage.act();
         stage.draw();

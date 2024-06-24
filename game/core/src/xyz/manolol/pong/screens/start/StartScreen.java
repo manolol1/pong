@@ -22,6 +22,9 @@ import xyz.manolol.pong.utils.FontManager;
 import xyz.manolol.pong.utils.HighscoreManager;
 import xyz.manolol.pong.utils.PrefsManager;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 public class StartScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final FitViewport viewport;
@@ -35,9 +38,14 @@ public class StartScreen extends ScreenAdapter {
     private TextButton textButton;
 
     private final HighscoreManager highscoreManager;
+    private final Label onlineHighscoreLabel;
+    private final CompletableFuture<Integer> highscoreFuture;
 
     public StartScreen(int playerCount) {
         Gdx.app.log("StartScreen", "loaded with playerCount: " + playerCount);
+
+        highscoreManager = new HighscoreManager();
+        highscoreFuture = highscoreManager.getOnlineHighscore(playerCount);
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, camera);
@@ -45,7 +53,6 @@ public class StartScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         skin = VisUI.getSkin();
         fontManager = new FontManager("fonts/Roboto-Regular.ttf");
-        highscoreManager = new HighscoreManager();
 
         root = new Table();
         root.setFillParent(true);
@@ -86,8 +93,8 @@ public class StartScreen extends ScreenAdapter {
 
         skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
-        label = new Label("Online: " , skin);
-        root.add(label).padBottom(60).row();
+        onlineHighscoreLabel = new Label("Online: loading...", skin);
+        root.add(onlineHighscoreLabel).padBottom(60).row();
 
         // set up buttonTable
         buttonTable = new Table();
@@ -120,6 +127,16 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+
+        if (highscoreFuture.isDone()) {
+            try {
+                onlineHighscoreLabel.setText("Online Highscore: " + highscoreFuture.get());
+            } catch (InterruptedException | ExecutionException e) {
+                onlineHighscoreLabel.setText("Failed to load highscore");
+            }
+        } else {
+            onlineHighscoreLabel.setText("Loading highscore...");
+        }
 
         stage.act();
         stage.draw();
