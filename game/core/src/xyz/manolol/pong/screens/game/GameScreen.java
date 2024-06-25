@@ -5,11 +5,17 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.kotcrab.vis.ui.VisUI;
 import xyz.manolol.pong.Constants;
 import xyz.manolol.pong.Pong;
 import xyz.manolol.pong.screens.gameover.GameOverScreen;
+import xyz.manolol.pong.utils.FontManager;
 import xyz.manolol.pong.utils.HighscoreManager;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,6 +43,12 @@ public class GameScreen extends ScreenAdapter {
 
     private int score = 0;
 
+    private final Stage stage;
+    private final Skin skin;
+    private Label scoreLabel;
+    private final Table root;
+    private final FontManager fontManager;
+
     public GameScreen(int playerCount) {
         this.playerCount = playerCount;
 
@@ -53,6 +65,20 @@ public class GameScreen extends ScreenAdapter {
         ballCollisionController = new BallCollisionController(playerManager, ball, this, playerCount);
 
         highscoreManager = new HighscoreManager();
+
+        stage = new Stage(uiViewport);
+        Gdx.input.setInputProcessor(stage);
+        skin = VisUI.getSkin();
+        fontManager = new FontManager("fonts/Roboto-Regular.ttf");
+
+        // Score Text
+        skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
+        scoreLabel = new Label("", skin);
+        root = new Table();
+        root.setFillParent(true);
+        root.top().right();
+        root.add(scoreLabel).pad(20);
+        stage.addActor(root);
     }
 
     @Override
@@ -73,6 +99,12 @@ public class GameScreen extends ScreenAdapter {
         playerManager.draw(shapeRenderer);
 
         shapeRenderer.end();
+
+        // update score / UI
+        uiViewport.apply();
+        scoreLabel.setText(score);
+        stage.act();
+        stage.draw();
 
         // workaround for checking game over state to avoid crash
         if (gameOverState != -1) {

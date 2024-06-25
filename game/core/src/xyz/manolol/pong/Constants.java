@@ -14,8 +14,8 @@ public class Constants
     /* Viewports */
     public static final float WORLD_WIDTH = 128f;
     public static final float WORLD_HEIGHT = 128f;
-    public static final float UI_WIDTH = 1920f;
-    public static final float UI_HEIGHT = 1080f;
+    public static final float UI_WIDTH = 1800f;
+    public static final float UI_HEIGHT = 1800f;
 
     /* Player */
     public static final float PLAYER_WIDTH = 5f;

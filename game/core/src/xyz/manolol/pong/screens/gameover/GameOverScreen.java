@@ -73,7 +73,7 @@ public class GameOverScreen extends ScreenAdapter {
 
         skin.get(Label.LabelStyle.class).font = fontManager.getFont(80);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
-        onlineHighscoreLabel = new Label("Online: loading...", skin);
+        onlineHighscoreLabel = new Label("Online Highscore: loading...", skin);
         root.add(onlineHighscoreLabel).padBottom(40).row();
 
         skin.get(TextButton.TextButtonStyle.class).font = fontManager.getFont(80);

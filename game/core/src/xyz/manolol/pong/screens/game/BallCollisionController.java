@@ -36,18 +36,10 @@ public class BallCollisionController {
         }
 
         if (ball.getBounds().y <= 0) { // bottom wall
-            if (playerCount >= 2) {
-                gameScreen.gameOver(2);
-            } else if (playerCount == 1) {
                 gameScreen.gameOver(1);
-            } else {
-                ball.setRandomVelocity();
-                ball.swapVelocityY();
-                ball.setPositionY(0); // Adjust position
-            }
         } else if (ball.getBounds().y + ball.getBounds().height >= Constants.WORLD_HEIGHT) { // top wall
             if (playerCount > 1) {
-                gameScreen.gameOver(1);
+                gameScreen.gameOver(2);
             } else {
                 ball.swapVelocityY();
                 ball.setRandomVelocity();

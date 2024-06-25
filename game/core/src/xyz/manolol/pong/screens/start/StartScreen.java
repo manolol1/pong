@@ -131,7 +131,7 @@ public class StartScreen extends ScreenAdapter {
         // wait for online highscore to finish loading and set immediately
         if (highscoreFuture.isDone()) {
             try {
-                onlineHighscoreLabel.setText("Online Highscore: " + highscoreFuture.get());
+                onlineHighscoreLabel.setText("Online: " + highscoreFuture.get());
             } catch (InterruptedException | ExecutionException e) {
                 onlineHighscoreLabel.setText("Failed to load online highscore");
             }
