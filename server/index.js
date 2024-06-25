@@ -14,8 +14,9 @@ function readData() {
   data = JSON.parse(fs.readFileSync(dataPath));
 }
 
+// serve html file
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.status(200).sendFile(__dirname + '/index.html');
 })
 
 // get highscores
