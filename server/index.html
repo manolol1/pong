@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Pong</title>
     <style>
@@ -17,20 +18,89 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        
+
         .center {
             position: absolute;
             left: 50%;
             transform: translate(-50%);
             text-align: center;
         }
+
+        /* Style the table */
+        table {
+            width: 50vw;
+            max-width: 250px;
+            border-style: solid;
+            border-width: 3px;
+            border-collapse: collapse;
+            
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: darkgreen;
+            color: white;
+        }
+
+        td {
+            background-color: rgb(9, 126, 9);
+            color: white;
+        }
     </style>
 </head>
+
 <body>
     <div class="center">
         <h1 style="margin-top: 10vh;">Pong</h1>
-        <a href="https://github.com/manolol1/pong/releases/latest", target="_blank"><button>Download</button></a>
+        <a href="https://github.com/manolol1/pong/releases/latest" , target="_blank"><button>Download</button></a>
+
+        <h2 style="margin-top: 40px; margin-bottom: 5px;">Highscores</h2>
+        <table id="highscoresTable">
+            <tr>
+                <th>Player Count</th>
+                <th>Score</th>
+            </tr>
+
+            <tr id="score1">
+                <td>1</td>
+                <td>loading...</td>
+            </tr>
+            <tr id="score2">
+                <td>2</td>
+                <td>loading...</td>
+            </tr>
+            <tr id="score3">
+                <td>3</td>
+                <td>loading...</td>
+            </tr>
+            <tr id="score4">
+                <td>4</td>
+                <td>loading...</td>
+            </tr>
+        </table>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const updateScore = async (id) => {
+                try {
+                    const response = await fetch(`/highscore/${id}`);
+                    const score = await response.text();
+                    document.getElementById(`score${id}`).cells[1].textContent = score;
+                } catch (error) {
+                    console.error('Error fetching highscore:', error);
+                }
+            };
+
+            for (let i = 1; i <= 4; i++) {
+                updateScore(i);
+            }
+        });
+    </script>
 </body>
 
 </html>
