@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.kotcrab.vis.ui.VisUI;
 import xyz.manolol.pong.screens.mainmenu.MainMenuScreen;
-import xyz.manolol.pong.screens.start.StartScreen;
 
 public class Pong extends Game {
 	public static Pong GAME;
