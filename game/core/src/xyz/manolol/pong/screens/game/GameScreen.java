@@ -74,14 +74,16 @@ public class GameScreen extends ScreenAdapter {
 
         shapeRenderer.end();
 
-        // workaround to avoid crash
+        // workaround for checking game over state to avoid crash
         if (gameOverState != -1) {
             Pong.GAME.setScreen(new GameOverScreen(gameOverState, playerCount, score));
-            return;
+            return; // we need to return here to avoid crashing later
         }
     }
 
     public void gameOver(int player) {
+       // set highscore and wait for it to complete before switching screens
+        // always sending current score (even if it isn't a new highscore), highscore server will do validation
         try {
             highscoreManager.setHighscore(playerCount, score).get(5, TimeUnit.SECONDS); // wait up to 5 seconds for the request to complete
         } catch (InterruptedException | ExecutionException e) {

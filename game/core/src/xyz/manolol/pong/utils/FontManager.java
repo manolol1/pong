@@ -21,6 +21,8 @@ public class FontManager implements Disposable {
     public BitmapFont getFont(int size) {
         // generate new font if the specific size hasn't been generated yet
         if (!fonts.containsKey(size)) {
+            Gdx.app.log("FontManager", "Generating font with size: " + size);
+
             parameter.size = size;
             parameter.minFilter = Texture.TextureFilter.Linear;
             parameter.magFilter = Texture.TextureFilter.Linear;

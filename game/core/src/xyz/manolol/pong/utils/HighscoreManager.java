@@ -24,7 +24,7 @@ public class HighscoreManager {
         Net.HttpResponseListener httpResponseListener = new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                Gdx.app.log("HighscoreManager", "Online Highscore set successfully");
+                Gdx.app.log("HighscoreManager", "Online Highscore set successfully to " + score);
                 future.complete(null);
             }
 
@@ -44,6 +44,7 @@ public class HighscoreManager {
 
         // set local highscore
         if (score > getLocalHighscore(playerCount)) {
+            Gdx.app.log("HighscoreManager", "New local highscore: " + score);
             prefs.setHighscore(playerCount, score);
         }
 

@@ -36,6 +36,8 @@ public class GameOverScreen extends ScreenAdapter {
     CompletableFuture<Integer> highscoreFuture;
 
     public GameOverScreen(int playerLost, int playerCount, int score) {
+        Gdx.app.log("GameOverScreen", "loaded with playerLost: " + playerLost + ", playerCount: " + playerCount + ", score: " + score);
+
         highscoreManager = new HighscoreManager();
         highscoreFuture = highscoreManager.getOnlineHighscore(playerCount);
 
@@ -103,14 +105,15 @@ public class GameOverScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
 
+        // wait for online highscore to finish loading and set immediately
         if (highscoreFuture.isDone()) {
             try {
                 onlineHighscoreLabel.setText("Online Highscore: " + highscoreFuture.get());
             } catch (InterruptedException | ExecutionException e) {
-                onlineHighscoreLabel.setText("Failed to load highscore");
+                onlineHighscoreLabel.setText("Failed to load online highscore");
             }
         } else {
-            onlineHighscoreLabel.setText("Loading highscore...");
+            onlineHighscoreLabel.setText("Loading online highscore...");
         }
 
         stage.act();

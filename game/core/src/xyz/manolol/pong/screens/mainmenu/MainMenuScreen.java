@@ -31,6 +31,8 @@ public class MainMenuScreen extends ScreenAdapter {
     private TextButton textButton;
 
     public MainMenuScreen() {
+        Gdx.app.log("MainMenuScreen", "loaded");
+
         camera = new OrthographicCamera();
         viewport = new FitViewport(Constants.UI_WIDTH, Constants.UI_HEIGHT, camera);
         stage = new Stage(viewport);
