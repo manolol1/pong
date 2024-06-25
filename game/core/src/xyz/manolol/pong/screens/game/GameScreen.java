@@ -23,6 +23,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+
 public class GameScreen extends ScreenAdapter {
 
     // cameras and viewports
@@ -84,6 +86,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
+
+        Gdx.gl.glEnable(GL_BLEND);
 
         gameViewport.apply();
         shapeRenderer.setProjectionMatrix(gameCamera.combined);
