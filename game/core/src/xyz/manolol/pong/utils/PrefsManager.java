@@ -24,6 +24,6 @@ public class PrefsManager {
     }
 
     public String getHighscoreServer() {
-        return prefs.getString("highscore_server", "http://azure.manolol.xyz:8080");
+        return prefs.getString("highscore_server", "https://pong.manolol.xyz");
     }
 }
